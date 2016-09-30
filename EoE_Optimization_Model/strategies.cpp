@@ -63,11 +63,9 @@ void Simulation_Processes::Strategy_One::run_six_food_elimination(
 	p_has_unknown_allergy = eliminate_all_foods(p);
 	if (p_has_unknown_allergy)
 	{
-		sr.patients_with_unknown++;
 		sr.total_egd += p.number_of_endoscopies;
 		return;
 	}
-	sr.patients_we_simulate_whole_strategy++;
 	add_back_food(NUTS, p); 
 	add_back_food(SEAFOOD, p);
 	add_back_food(LEGUMES_SLASH_SOY, p);
@@ -98,4 +96,16 @@ void Simulation_Processes::Strategy_Two::run_strategy(
 	else printf("FAILURE IN STRATEGY 2"); 
 }
 
+void Simulation_Processes::patient_initial_statistics(
+	Patient const &p, Strategy_Results &sr)
+{
+	sr.total_patients++;
+	if (p.real_num_allergies == UNKNOWN_ALLERGY)
+	{
+		sr.patients_with_unknown++;
+		return;
+	}
+	sr.patients_we_simulate_whole_strategy++;
+	sr.patients_with_multiple_allergies[p.real_num_allergies - 1]++;
+}
 

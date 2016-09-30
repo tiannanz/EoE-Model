@@ -53,8 +53,7 @@ public: //data types
 	std::array<bool, NUMBER_OF_ALLERGIES> current_foods_in_diet; 
 	std::array<bool, NUMBER_OF_ALLERGIES> patient_allergies;
 	std::array<bool, NUMBER_OF_ALLERGIES> allergies_found_in_strategy; 
-	allergy_counter how_many_allergies; //intermediate allergy counter
-private: 
+	allergy_counter how_many_allergies; //intermediate allergy counter 
 	int real_num_allergies; //considers case for 3 or more 
 private: //initialization functions 
 	void generate_patient_allergies(Probabilities const &probs);

@@ -9,6 +9,12 @@ class Patient;
 class Strategy_Results;
 enum possible_allergies;
 
+enum Number_of_Strategies
+{
+	SIX_FOOD_ELIMINATION,
+	INITIAL_ONLY_DAIRY_AND_WHEAT,
+	NUMBER_OF_STRATEGIES
+};
 
 namespace Simulation_Processes
 {
@@ -26,5 +32,8 @@ namespace Simulation_Processes
 	{
 		void run_strategy(Patient &p, Strategy_Results &sr); 
 	}
+
+	void patient_initial_statistics(
+		Patient const &p, Strategy_Results &sr);
 }
 
