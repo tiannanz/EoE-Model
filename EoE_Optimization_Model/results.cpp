@@ -15,7 +15,7 @@ Strategy_Results::Strategy_Results()
 void Strategy_Results::print_results(std::string const &strategy_tag)
 {
 	std::ofstream file; 
-	file.open("../../Results/" + strategy_tag + ".csv");
+	file.open("../Results/" + strategy_tag + ".csv");
 	/*header*/
 	file <<
 		"total patients," <<
