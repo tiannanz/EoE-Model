@@ -35,10 +35,10 @@ public: //public data types
 	double p_two_allergies;
 	double p_three_or_more;
 
-private: //private constant values for triggers , none can be the same!!!!!!
+private: //private constant values for triggers
 	double p_trigger_milk_dairy;
-	double p_trigger_eggs;
 	double p_trigger_wheat;
+	double p_trigger_eggs;
 	double p_trigger_legume_soy;
 	double p_trigger_seafood;
 	double p_trigger_nuts;
@@ -61,4 +61,3 @@ private: //initialization functions
 	void generate_patient_allergies(Probabilities const &probs);
 	void calculate_number_of_allergies(Probabilities const &probs); 
 };
-

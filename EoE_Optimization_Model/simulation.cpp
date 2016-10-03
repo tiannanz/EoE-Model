@@ -12,18 +12,18 @@ Probabilities::Probabilities()
 	p_three_or_more = 1 - p_one_allergy - p_two_allergies; 
 
 	/*private probabilities for individual allergies*/
+	p_trigger_milk_dairy = .45;
+	p_trigger_wheat = .65;
 	p_trigger_eggs = .25; 
 	p_trigger_legume_soy = .15; 
-	p_trigger_milk_dairy = .45; 
-	p_trigger_wheat = .65;
 	p_trigger_seafood = .14; 
 	p_trigger_nuts = .1; 
 
 	//initialize sorted array
 
 	probability_of_rxn = { 
-		p_trigger_milk_dairy, p_trigger_eggs, 
-		p_trigger_wheat, p_trigger_legume_soy, 
+		p_trigger_milk_dairy, p_trigger_wheat, 
+		p_trigger_eggs, p_trigger_legume_soy, 
 		p_trigger_seafood, p_trigger_nuts };
 }
 
