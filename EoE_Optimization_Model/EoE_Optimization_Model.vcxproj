@@ -149,6 +149,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="global_parameters.h" />
+    <ClInclude Include="metropolishastings.h" />
     <ClInclude Include="random_aa.h" />
     <ClInclude Include="results.h" />
     <ClInclude Include="simulation.h" />
@@ -158,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="metropolishastings.cpp" />
     <ClCompile Include="random_aa.cpp" />
     <ClCompile Include="results.cpp" />
     <ClCompile Include="simulation.cpp" />

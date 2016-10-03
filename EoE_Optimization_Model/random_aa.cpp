@@ -45,3 +45,20 @@ bool check_small_double_equality(double a, double b)
 	double epsilon = std::numeric_limits<double>::epsilon();
 	return (abs(b - a) <= 5*epsilon);
 }
+
+double gamma_rng(double alpha, double beta)
+{
+	double a; 
+	boost::random::gamma_distribution<> dis(alpha, beta);
+	a = dis(gen);
+	return a;
+}
+
+double beta_rng(double alpha, double beta)
+{
+	double answer; 
+	double x = gamma_rng(alpha, 1);
+	double y = gamma_rng(beta, 1);
+	answer = x / (x + y);
+	return answer; 
+}

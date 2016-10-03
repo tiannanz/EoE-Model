@@ -18,8 +18,8 @@ Probabilities::Probabilities()
 	p_trigger_legume_soy = .15; 
 	p_trigger_seafood = .14; 
 	p_trigger_nuts = .1; 
-
-	//initialize sorted array
+	
+	//initialize arrray
 
 	probability_of_rxn = { 
 		p_trigger_milk_dairy, p_trigger_wheat, 

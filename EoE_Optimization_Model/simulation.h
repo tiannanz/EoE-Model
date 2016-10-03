@@ -23,8 +23,11 @@ enum allergy_counter
 	UNINITIALIZED
 };
 
+class Metropolis_Hastings; 
+
 class Probabilities //probability of each allergy individually 
 {
+	friend class Metropolis_Hastings; 
 public: //constructor
 	Probabilities(); 
 public: //public data types
