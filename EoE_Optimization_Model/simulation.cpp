@@ -49,6 +49,19 @@ Patient::Patient(Probabilities const &probs)
 	generate_patient_allergies(probs);
 }
 
+void Patient::reset_patient()
+{
+	number_of_endoscopies = 0; 
+	current_foods_in_diet = {
+		true, true, true,
+		true, true, true
+	};
+	allergies_found_in_strategy = {
+		false, false, false,
+		false, false, false
+	};
+}
+
 void Patient::calculate_number_of_allergies(Probabilities const &probs)
 {
 	double check_for_unknown = uniform_rng();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include <array>
 
 enum possible_allergies
 {
@@ -47,6 +48,7 @@ class Patient
 {
 public: //constructors
 	Patient(Probabilities const &probs);
+	void reset_patient();
 public: //data types
 	//from probability of highest allergy --> lowest allergy
 	int number_of_endoscopies;

@@ -3,7 +3,6 @@
 #include <vector>
 
 typedef bool did_patient_have_reaction;
-typedef bool success; 
 typedef bool still_have_allergy;
 class Patient; 
 class Strategy_Results;
@@ -22,7 +21,7 @@ namespace Simulation_Processes
 	void eliminate_specific_food(possible_allergies const &allergy, Patient &p);
 	still_have_allergy eliminate_all_foods(Patient &p);
 	void add_back_food(possible_allergies const &food_to_add, Patient &p); 
-	success finish_strategy(Patient &p, Strategy_Results &sr);
+	void finish_strategy(Patient &p, Strategy_Results &sr, std::string const &strategy);
 
 	namespace Strategy_One
 	{
@@ -36,4 +35,3 @@ namespace Simulation_Processes
 	void patient_initial_statistics(
 		Patient const &p, Strategy_Results &sr);
 }
-

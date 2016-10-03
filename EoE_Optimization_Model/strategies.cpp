@@ -2,6 +2,8 @@
 #include "strategies.h"
 #include "simulation.h"
 #include "results.h"
+#include <iostream>
+#include <array>
 
 did_patient_have_reaction Simulation_Processes::endoscopize(Patient &p)
 {
@@ -44,16 +46,19 @@ void Simulation_Processes::add_back_food(possible_allergies const &food_to_add, 
 	}
 }
 
-success Simulation_Processes::finish_strategy(Patient &p, Strategy_Results &sr)
+void Simulation_Processes::finish_strategy(Patient &p, Strategy_Results &sr, 
+	std::string const &strategy)
 {
 	for (int allergy = 0; allergy < NUMBER_OF_ALLERGIES; allergy++)
 	{
 		if (p.patient_allergies[allergy] == true) sr.patients_with_allergy[allergy]++;
-		if (p.patient_allergies[allergy] != p.allergies_found_in_strategy[allergy]) return false;
+		if (p.patient_allergies[allergy] != p.allergies_found_in_strategy[allergy])
+		{
+			std::cout << "Failure in " << strategy << std::endl;
+		}
 	}
 	sr.total_egd += p.number_of_endoscopies;
 	sr.total_egd_without_unknown += p.number_of_endoscopies;
-	return true; 
 }
 
 void Simulation_Processes::Strategy_One::run_six_food_elimination(
@@ -71,10 +76,8 @@ void Simulation_Processes::Strategy_One::run_six_food_elimination(
 	add_back_food(LEGUMES_SLASH_SOY, p);
 	add_back_food(EGG, p);
 	add_back_food(WHEAT, p);
-	add_back_food(MILK_OR_DAIRY, p);
-	bool finish = false; 
-	finish = finish_strategy(p, sr);
-	if (!finish) printf("STRATEGY FAILURE");
+	add_back_food(MILK_OR_DAIRY, p); 
+	finish_strategy(p, sr, "strategy six_food_elim");
 }
 
 void Simulation_Processes::Strategy_Two::run_strategy(
@@ -89,11 +92,8 @@ void Simulation_Processes::Strategy_Two::run_strategy(
 	{
 		add_back_food(MILK_OR_DAIRY, p); 
 		add_back_food(WHEAT, p); 
-		bool finish = false; 
-		finish = finish_strategy(p, sr);
-		if (!finish) printf("FAILURE IN STRATEGY 2");
+		finish_strategy(p, sr, "strategy elim initial two food");
 	}
-	else printf("FAILURE IN STRATEGY 2"); 
 }
 
 void Simulation_Processes::patient_initial_statistics(

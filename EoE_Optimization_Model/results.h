@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include <string>
 #include "simulation.h"
+#include <array>
 
 class Strategy_Results
 {

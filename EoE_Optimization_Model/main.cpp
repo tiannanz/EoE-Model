@@ -3,8 +3,10 @@
 #include "simulation.h"
 #include "results.h"
 #include <ctime>
+#include <fstream>
 
-
+#define SIMULATION_POPULATION 100000
+#define PRINT_RAW_DATA true
 
 int main()
 {	
@@ -19,25 +21,72 @@ int main()
 	std::vector<Strategy_Results> hold_results;
 	for (int i = 0; i < NUMBER_OF_STRATEGIES; i++) hold_results.push_back(sr);
 
-	for (int num_patients = 0; num_patients < 100000; num_patients++)
+	std::ofstream patient_level_info_S1;
+	patient_level_info_S1.open("../Results/patient_info_s1.csv");
+	std::ofstream patient_level_info_S2;
+	patient_level_info_S2.open("../Results/patient_info_s2.csv");
+
+	if (PRINT_RAW_DATA)
 	{
-		Patient p(probs);
+		patient_level_info_S1 <<
+			"patient ID," << "number of endoscopies," << "milk or dairy," <<
+			"wheat," << "egg," << "legumes and soy," << "seafood," <<
+			"nuts,";
 
-		std::vector<Patient> hold_patients; 
-		for (int i = 0; i < NUMBER_OF_STRATEGIES; i++)
-		{
-			hold_patients.push_back(p);
-			Simulation_Processes::patient_initial_statistics(p, hold_results[i]);
-		}
-
-		Simulation_Processes::Strategy_One::run_six_food_elimination(
-			hold_patients[SIX_FOOD_ELIMINATION], hold_results[SIX_FOOD_ELIMINATION]);
-		Simulation_Processes::Strategy_Two::run_strategy(
-			hold_patients[INITIAL_ONLY_DAIRY_AND_WHEAT], hold_results[INITIAL_ONLY_DAIRY_AND_WHEAT]);
+		patient_level_info_S2 <<
+			"patient ID," << "number of endoscopies," << "milk or dairy," <<
+			"wheat," << "egg," << "legumes and soy," << "seafood," <<
+			"nuts,";
 	}
 
-	hold_results[0].print_results("six_food_elimination");
-	hold_results[1].print_results("strategy_two_eliminate_wheat_dairy_initial");
+	for (int num_patients = 0; num_patients < SIMULATION_POPULATION; num_patients++)
+	{
+		Patient p(probs);
+		for (int i = 0; i < NUMBER_OF_STRATEGIES; i++)
+		{
+			Simulation_Processes::patient_initial_statistics(p, hold_results[i]);
+		}
+		Simulation_Processes::Strategy_One::run_six_food_elimination(
+			p, hold_results[SIX_FOOD_ELIMINATION]);
+
+		if (PRINT_RAW_DATA)
+		{
+			if (p.how_many_allergies != UNKNOWN_ALLERGY)
+			{
+				patient_level_info_S1 << "\n" <<
+					num_patients << "," << p.number_of_endoscopies << ",";
+				for (int ii = 0; ii < NUMBER_OF_ALLERGIES; ii++)
+				{
+					patient_level_info_S1 << p.patient_allergies[ii] << ",";
+				}
+			}
+		}
+		p.reset_patient();
+
+		Simulation_Processes::Strategy_Two::run_strategy(
+				p, hold_results[INITIAL_ONLY_DAIRY_AND_WHEAT]);
+
+		if (PRINT_RAW_DATA)
+		{
+			if (p.how_many_allergies != UNKNOWN_ALLERGY)
+			{
+				patient_level_info_S2 << "\n" <<
+					num_patients << "," << p.number_of_endoscopies << ",";
+
+				for (int ii = 0; ii < NUMBER_OF_ALLERGIES; ii++)
+				{
+					patient_level_info_S2 << p.patient_allergies[ii] << ",";
+				}
+			}
+		}
+
+	}
+
+	patient_level_info_S1.close();
+	patient_level_info_S2.close();
+
+	hold_results[SIX_FOOD_ELIMINATION].print_results("six_food_elimination");
+	hold_results[INITIAL_ONLY_DAIRY_AND_WHEAT].print_results("strategy_two_eliminate_wheat_dairy_initial");
 
 	clock_t end_time = clock();
 	double total_time = double(end_time - start_time) / CLOCKS_PER_SEC;
