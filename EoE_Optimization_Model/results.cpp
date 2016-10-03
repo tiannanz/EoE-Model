@@ -30,7 +30,7 @@ void Strategy_Results::print_results(std::string const &strategy_tag)
 		"pts with seafood,"<< "pts with nuts," <<
 		"pts with 1 allergy," << "pts with 2 alleriges," <<
 		"pts with 3 allergies," << "pts with 4 allergies,"<<
-		"pts with 5 alleriges,"<<"pts with 6 allergies"<<
+		"pts with 5 alleriges,"<<"pts with 6 allergies,"<<
 		"average endoscopies not including patients with unknown"
 		"\n";
 	file <<
