@@ -3,16 +3,18 @@
 #include <fstream>
 
 
-Strategy_Results::Strategy_Results()
+Strategy_Results::Strategy_Results() :
+	total_patients(0),
+	patients_with_unknown(0),
+	patients_we_simulate_whole_strategy(0),
+	total_egd(0),
+	total_egd_without_unknown(0),
+	patients_with_allergy{},
+	patients_with_multiple_allergies{}
 {
-	total_patients = 0;
-	patients_with_unknown = 0;
-	patients_we_simulate_whole_strategy = 0;
-	total_egd = 0;
-	total_egd_without_unknown = 0; 
-	patients_with_allergy = {};
-	patients_with_multiple_allergies = {};
 }
+
+
 
 void Strategy_Results::print_results(std::string const &strategy_tag)
 {

@@ -96,6 +96,12 @@ void Simulation_Processes::Strategy_Two::run_strategy(
 	}
 }
 
+void Simulation_Processes::Strategy_Three::run_strategy(
+	Patient &p, Strategy_Results &sr)
+{
+	return;
+}
+
 void Simulation_Processes::patient_initial_statistics(
 	Patient const &p, Strategy_Results &sr)
 {

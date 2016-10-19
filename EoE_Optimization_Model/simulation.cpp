@@ -3,36 +3,37 @@
 #include "random_aa.h"
 #include <vector>
 
-Probabilities::Probabilities()
-{
-	//initialize public probailities
-	p_eliminate_allergies_still_unknown = .15;
-	p_one_allergy = .5; 
-	p_two_allergies = .25; 
-	p_three_or_more = 1 - p_one_allergy - p_two_allergies; 
+Probabilities::Probabilities() :
+
+	p_eliminate_allergies_still_unknown(.15),
+	p_one_allergy(.5),
+	p_two_allergies(.25),
+		
 
 	/*private probabilities for individual allergies*/
-	p_trigger_milk_dairy = .45;
-	p_trigger_wheat = .65;
-	p_trigger_eggs = .25; 
-	p_trigger_legume_soy = .15; 
-	p_trigger_seafood = .14; 
-	p_trigger_nuts = .1; 
-	
-	//initialize arrray
+	p_trigger_milk_dairy(.45),
+	p_trigger_wheat(.65),
+	p_trigger_eggs(.25),
+	p_trigger_legume_soy(.15),
+	p_trigger_seafood(.14),
+	p_trigger_nuts(.1)
 
+{
+	p_three_or_more = (1 - p_one_allergy - p_two_allergies);
+	//initialize arrray
 	probability_of_rxn = { 
 		p_trigger_milk_dairy, p_trigger_wheat, 
 		p_trigger_eggs, p_trigger_legume_soy, 
 		p_trigger_seafood, p_trigger_nuts };
 }
 
-Patient::Patient(Probabilities const &probs)
+Patient::Patient(Probabilities const &probs):
+
+	how_many_allergies(UNINITIALIZED), 
+	number_of_endoscopies(0),
+	real_num_allergies (0) 
+
 {
-	how_many_allergies = UNINITIALIZED; 
-	number_of_endoscopies = 0;
-	real_num_allergies = 0; 
-	//initialize current foods as all true 
 	current_foods_in_diet = {
 		true, true, true,
 		true, true, true

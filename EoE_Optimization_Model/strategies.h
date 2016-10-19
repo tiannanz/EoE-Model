@@ -31,7 +31,10 @@ namespace Simulation_Processes
 	{
 		void run_strategy(Patient &p, Strategy_Results &sr); 
 	}
-
+	namespace Strategy_Three
+	{
+		void run_strategy(Patient &p, Strategy_Results &sr);
+	}
 	void patient_initial_statistics(
 		Patient const &p, Strategy_Results &sr);
 }
