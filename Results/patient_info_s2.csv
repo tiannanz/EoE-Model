@@ -1,4 +1,4 @@
-patient ID,number of endoscopies,milk or dairy,wheat,egg,legumes and soy,seafood,nuts,
+patient ID,number of endoscopies,milk or dairy,wheat,egg,legumes and soy,seafood,nuts
 0,5,1,1,0,0,0,0,
 2,4,1,0,0,0,0,0,
 3,9,0,0,1,0,0,0,

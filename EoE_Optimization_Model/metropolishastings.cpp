@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "metropolishastings.h"
 #include "random_aa.h"
+#include "global_parameters.h"
 
 /*
 Define the beta distribution as 
@@ -12,10 +13,14 @@ y = gamma(b, c), then x / (x + y ) = beta ( a, b ).
 */
 
 
-Metropolis_Hastings::Metropolis_Hastings()
+Metropolis_Hastings::Metropolis_Hastings() :
+
+	warmup_sets(1000),
+	hold_probabilities{},
+	duplicate{}
 {
-	warmup_sets = 1000; 
-	hold_parameter_sets = {};
+	hold_probabilities.reserve(Parameters::PSA_ITERATIONS);
+	duplicate.reserve(Parameters::PSA_ITERATIONS);
 }
 
 density Metropolis_Hastings::generate_new_set(Probabilities &p)
@@ -36,67 +41,44 @@ density Metropolis_Hastings::calculate_density(Probabilities &p)
 	return f_x; 
 }
 
-void Metropolis_Hastings::update_probability_array(Probabilities &p,
-	const int &psa_iteration, const bool &is_it_a_duplicate)
+void Metropolis_Hastings::update_probability_vector(Probabilities const &p, 
+	const bool &is_it_a_duplicate)
 {
-	int array_size = NUMBER_OF_ALLERGIES;
-	hold_parameter_sets[psa_iteration][MILK_OR_DAIRY] = p.p_trigger_milk_dairy;
-	hold_parameter_sets[psa_iteration][WHEAT] = p.p_trigger_wheat;
-	hold_parameter_sets[psa_iteration][EGG] = p.p_trigger_eggs;
-	hold_parameter_sets[psa_iteration][LEGUMES_SLASH_SOY] = p.p_trigger_legume_soy;
-	hold_parameter_sets[psa_iteration][SEAFOOD] = p.p_trigger_seafood;
-	hold_parameter_sets[psa_iteration][NUTS] = p.p_trigger_nuts;
-	hold_parameter_sets[psa_iteration][array_size] = is_it_a_duplicate;
-}
-
-check_duplicate Metropolis_Hastings::update_probability_object(Probabilities &p,
-	const int &psa_iteration)
-{
-	int array_size = NUMBER_OF_ALLERGIES;
-	p.p_trigger_milk_dairy = hold_parameter_sets[psa_iteration][MILK_OR_DAIRY];
-	p.p_trigger_wheat = hold_parameter_sets[psa_iteration][WHEAT];
-	p.p_trigger_eggs = hold_parameter_sets[psa_iteration][EGG];
-	p.p_trigger_legume_soy = hold_parameter_sets[psa_iteration][LEGUMES_SLASH_SOY];
-	p.p_trigger_seafood = hold_parameter_sets[psa_iteration][SEAFOOD];
-	p.p_trigger_nuts = hold_parameter_sets[psa_iteration][NUTS];
-	return hold_parameter_sets[psa_iteration][array_size];
+	hold_probabilities.push_back(p);
+	duplicate.push_back(is_it_a_duplicate);
 }
 
 store_parameter_sets_from_psa Metropolis_Hastings::run_algorithm()
 {
 	bool not_duplicate = false; 
-	bool duplicate = true; 
-	Probabilities p;
-	update_probability_array(p, 0, not_duplicate);
-	if (Parameters::PSA_ITERATIONS == 0) return; 
-	density current_fallback_density = generate_new_set(p); /*initialization*/
-	for (int i = 0; i < (Parameters::PSA_ITERATIONS + warmup_sets); i++)
-	{
-		int psa_iteration = i - warmup_sets; 
-		bool start_storing = (psa_iteration > 0);
-		density possible_density = generate_new_set(p);
+	bool duplicate = true;
+
+	Probabilities fallback, test_set; 
+	update_probability_vector(fallback, not_duplicate); //add initial unaltered set
+	density current_fallback_density = generate_new_set(fallback); /*initialization*/
+
+	for (int i = 0; i < Parameters::PSA_ITERATIONS; i++)
+	{	
+		density possible_density = generate_new_set(test_set);
 		acceptance_ratio ar = possible_density / current_fallback_density;
-		if (ar >= 1)
+		if (ar >= 1) //immediately accept the new set
 		{
-			/*new comparison point*/
 			current_fallback_density = possible_density;
-			if (start_storing) update_probability_array(p, psa_iteration+1, not_duplicate);
+			fallback = test_set; //the new fallback is the current test set
+			update_probability_vector(fallback, not_duplicate); //update the vector 
 		}
 		else
 		{
-			/*accept with probability of the acceptance ratio*/
 			double x = uniform_rng();
 			if (x < ar) /*accept*/
 			{
 				current_fallback_density = possible_density; 
-				if (start_storing)
-				{
-					update_probability_array(p, psa_iteration+1, not_duplicate);
-				}
+				fallback = test_set; 
+				update_probability_vector(fallback, not_duplicate);
 			}
-			else
+ 			else /*fail to accept, have a duplicate*/
 			{
-				update_probability_array(p, psa_iteration+1, duplicate);
+				update_probability_vector(fallback, duplicate);
 			}
 		}
 	}

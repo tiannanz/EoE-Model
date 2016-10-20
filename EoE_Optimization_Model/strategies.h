@@ -37,4 +37,8 @@ namespace Simulation_Processes
 	}
 	void patient_initial_statistics(
 		Patient const &p, Strategy_Results &sr);
+	/*OVERALL CONTROL FLOW*/
+	void run_PSA_simulation();
+	void run_base_case_simulation();
+	void print_patient_level_info_headers();
 }
