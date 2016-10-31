@@ -13,6 +13,7 @@ enum Number_of_Strategies
 	SIX_FOOD_ELIMINATION,
 	INITIAL_ONLY_DAIRY_AND_WHEAT,
 	INITIAL_DAIRY_WHEAT_EGG,
+	INITIAL_DAIRY_WHEAT_EGG_SOY,
 	NUMBER_OF_STRATEGIES
 };
 
@@ -33,6 +34,10 @@ namespace Simulation_Processes
 		void run_strategy(Patient &p, Strategy_Results &sr); 
 	}
 	namespace Strategy_Three
+	{
+		void run_strategy(Patient &p, Strategy_Results &sr);
+	}
+	namespace Strategy_Four
 	{
 		void run_strategy(Patient &p, Strategy_Results &sr);
 	}

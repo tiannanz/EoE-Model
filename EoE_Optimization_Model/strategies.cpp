@@ -116,6 +116,27 @@ void Simulation_Processes::Strategy_Three::run_strategy(
 	}
 }
 
+void Simulation_Processes::Strategy_Four::run_strategy(
+	Patient &p, Strategy_Results &sr)
+{
+	bool reaction = false;
+	eliminate_specific_food(WHEAT, p);
+	eliminate_specific_food(MILK_OR_DAIRY, p);
+	eliminate_specific_food(EGG, p);
+	eliminate_specific_food(LEGUMES_SLASH_SOY, p);
+	reaction = endoscopize(p);
+	if (reaction) Strategy_One::run_six_food_elimination(p, sr);
+	else if (!reaction)
+	{
+		add_back_food(MILK_OR_DAIRY, p);
+		add_back_food(WHEAT, p);
+		add_back_food(EGG, p);
+		add_back_food(LEGUMES_SLASH_SOY, p);
+		finish_strategy(p, sr, "strategy elim initial four food");
+	}
+
+}
+
 void Simulation_Processes::patient_initial_statistics(
 	Patient const &p, Strategy_Results &sr)
 {
@@ -175,13 +196,16 @@ void Simulation_Processes::run_PSA_simulation()
 				p, hold_results[INITIAL_ONLY_DAIRY_AND_WHEAT]);
 			p.reset_patient();
 			Simulation_Processes::Strategy_Three::run_strategy(
-				p, hold_results[INITIAL_ONLY_DAIRY_AND_WHEAT]);
+				p, hold_results[INITIAL_DAIRY_WHEAT_EGG]);
 			p.reset_patient();
+			Simulation_Processes::Strategy_Four::run_strategy(
+				p, hold_results[INITIAL_DAIRY_WHEAT_EGG_SOY]);
 		}
 		/*ACTUALLY PRINT THE RESULTS OF THE STRATEGY*/
 		hold_results[SIX_FOOD_ELIMINATION].print_results("six_food_elimination_" + attach_psa_param + ".csv");
 		hold_results[INITIAL_ONLY_DAIRY_AND_WHEAT].print_results("strategy_two_eliminate_wheat_dairy_initial_" + attach_psa_param + ".csv");
 		hold_results[INITIAL_DAIRY_WHEAT_EGG].print_results("strategy_three_eliminate_d_w_e_initial_" + attach_psa_param +".csv");
+		hold_results[INITIAL_DAIRY_WHEAT_EGG_SOY].print_results("strategy_four_eliminate_d_w_e_s_initial" + attach_psa_param + ".csv");
 	}
 }
 
@@ -267,12 +291,34 @@ everything about every patient you never wanted to know. To turn off, DONT PRINT
 			file.close();
 		}
 
+		p.reset_patient();
+
+		Simulation_Processes::Strategy_Four::run_strategy(
+			p, hold_results[INITIAL_DAIRY_WHEAT_EGG_SOY]);
+
+		if (Parameters::PRINT_RAW_DATA)
+		{
+			std::ofstream file;
+			file.open("../Results/patient_info_s4.csv", std::ios::app);
+			if (p.how_many_allergies != UNKNOWN_ALLERGY)
+			{
+				file << "\n" <<
+					num_patients << "," << p.number_of_endoscopies << ",";
+				for (int ii = 0; ii < NUMBER_OF_ALLERGIES; ii++)
+				{
+					file << p.patient_allergies[ii] << ",";
+				}
+			}
+			file.close();
+		}
 
 		p.reset_patient();
+
 	}
 	/*ACTUALLY PRINT THE RESULTS OF THE STRATEGY*/
 	hold_results[SIX_FOOD_ELIMINATION].print_results("six_food_elimination_base_case.csv");
 	hold_results[INITIAL_ONLY_DAIRY_AND_WHEAT].print_results("strategy_two_eliminate_wheat_dairy_initial_base_case.csv");
 	hold_results[INITIAL_DAIRY_WHEAT_EGG].print_results("strategy_three_eliminate_d_w_e_initial_.csv");
+	hold_results[INITIAL_DAIRY_WHEAT_EGG_SOY].print_results("strategy_four_eliminate_d_w_e_s_initial.csv");
 }
 
