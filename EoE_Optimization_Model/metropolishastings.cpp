@@ -159,7 +159,7 @@ void Metropolis_Hastings::run_metropolis_algorithm()
 		{
 			step_test_probabilities = reference_probabilities;
 		}
-		print_set_all(reference_probabilities);
+		if (print_all) print_set_all(reference_probabilities);
 		warmup++;
 	}
 	
@@ -185,7 +185,7 @@ void Metropolis_Hastings::run_metropolis_algorithm()
 		add_psa_probs_to_prob_object(reference_probabilities,
 			hold_probabilities[j]);
 
-		print_set_all(reference_probabilities);
+		if (print_all) print_set_all(reference_probabilities);
 		print_set_final(reference_probabilities);
 	}
 }
