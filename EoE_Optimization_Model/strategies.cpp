@@ -170,7 +170,9 @@ void Simulation_Processes::print_patient_level_info_headers()
 void Simulation_Processes::run_PSA_simulation()
 {
 	Metropolis_Hastings run_psa;
-	run_psa.run_algorithm();
+	fprintf(stderr, "\nGenerating PSA parameter sets");
+	run_psa.run_metropolis_algorithm();
+	fprintf(stderr, "\nMetropolis algorithm complete. PSA parameter sets generated.");
 
 	for (int i = 0; i < Parameters::PSA_ITERATIONS; i++)
 	{
