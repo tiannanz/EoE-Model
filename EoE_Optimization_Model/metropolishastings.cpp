@@ -96,8 +96,8 @@ void Metropolis_Hastings::print_set_all(std::vector<double> const &probs)
 		std::ofstream parameter_output;
 		parameter_output.open("../Results/all_sensitivity_parameter_sets.csv");
 		//header file
-		parameter_output << "p_milk_dairy, p_wheat, p_eggs, p_legumes_soy, p_seafood, p_nuts, p_one_allergy, \
-p_two_allergy";
+		parameter_output << "p_milk_dairy, p_wheat, p_eggs, p_legumes_soy, p_seafood, p_nuts, \
+p_unknown_allergy, p_one_allergy, p_two_allergy,";
 		parameter_output.close();
 		not_yet_called = false;
 	}
@@ -122,8 +122,8 @@ void Metropolis_Hastings::print_set_final(std::vector<double> const &probs)
 		std::ofstream parameter_output;
 		parameter_output.open("../Results/final_sensitivity_parameter_sets.csv");
 		//header file
-		parameter_output << "p_milk_dairy, p_wheat, p_eggs, p_legumes_soy, p_seafood, p_nuts, p_one_allergy, \
-p_two_allergy";
+		parameter_output << "p_milk_dairy, p_wheat, p_eggs, p_legumes_soy, p_seafood, p_nuts, \
+p_unknown_allergy, p_one_allergy, p_two_allergy,";
 		parameter_output.close();
 		not_yet_called = false;
 	}

@@ -1,4 +1,4 @@
-p_milk_dairy, p_wheat, p_eggs, p_legumes_soy, p_seafood, p_nuts, p_one_allergy, p_two_allergy
+p_milk_dairy, p_wheat, p_eggs, p_legumes_soy, p_seafood, p_nuts, p_unknown_allergy, p_one_allergy, p_two_allergy,
 0.45,0.65,0.25,0.15,0.14,0.1,0.15,0.5,0.25,
 0.425499,0.662698,0.257516,0.146353,0.133004,0.0884744,0.128161,0.461554,0.261635,
 0.425499,0.662698,0.257516,0.146353,0.133004,0.0884744,0.128161,0.461554,0.261635,
